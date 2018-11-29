@@ -1,5 +1,4 @@
 import matplotlib.image as mplimg
-from pylab import plot, ginput, show, axis, imshow, draw
 from math import pi
 import matplotlib.pyplot as plt
 import scipy as sp
@@ -135,7 +134,7 @@ def getLine():
     # get mouse clicks
     pts = []
     while len(pts) == 0: # FIXME
-        pts = ginput(n=2)
+        pts = plt.ginput(n=2)
     pts_h = [[x[0],x[1],1] for x in pts]
     line = np.cross(pts_h[0], pts_h[1]) # line is [p0 p1 1] x [q0 q1 1]
     # return points that were clicked on for plotting
@@ -277,8 +276,8 @@ def rectifyAffineF(im, nLinePairs, doRotationAfterH = True, doTranslationAfterH 
             raise Exception("len(x[0]): %d, len(x[1]): %d, len(vpts): %d!" % (len(x[0]), len(x[1]), len(vPts)))
 
 #         plt.close() # ginput does not allow new points to be plotted
-        imshow(im,cmap='gray')
-        axis('image')
+        plt.imshow(im,cmap='gray')
+        plt.axis('image')
         ax = plt.gca()
         xmin, xmax = ax.get_xlim()
         ymin, ymax = ax.get_ylim()
@@ -294,24 +293,24 @@ def rectifyAffineF(im, nLinePairs, doRotationAfterH = True, doTranslationAfterH 
         if plot_lines:
             for k in range(nred):
                 xx,yy = getPlotBoundsLine(limits, lines[0][k])
-                plot(xx,yy,'r--')
+                plt.plot(xx,yy,'r--')
             if nl1 - nred > 0:
                 xx,yy = getPlotBoundsLine(limits, lines[0][nl1-1])
-                plot(xx,yy,'g--')
+                plt.plot(xx,yy,'g--')
             for l in lines[1]:
                 xx,yy = getPlotBoundsLine(limits, l)
-                plot(xx,yy,'b--')
+                plt.plot(xx,yy,'b--')
 
         # Plot user-selected line segments (solid)
         if plot_points:
             # Plot lines: direction 1, all red but the last one green
             for k in range(0,nred):
-                plot(x[0][k],y[0][k],'r-')
+                plt.plot(x[0][k],y[0][k],'r-')
             if nl1 - nred > 0:
-                plot(x[0][nl1-1],y[0][nl1-1],'g-')
+                plt.plot(x[0][nl1-1],y[0][nl1-1],'g-')
             # Plot lines: direction 2
             for k in range(0,len(y[1])):
-                plot(x[1][k],y[1][k],'b-')
+                plt.plot(x[1][k],y[1][k],'b-')
 
         # Compute normalized vanishing points for plotting
         vPts_n = [[0,0] for x in vPts]
@@ -328,13 +327,13 @@ def rectifyAffineF(im, nLinePairs, doRotationAfterH = True, doTranslationAfterH 
         if plot_vpts:
             for i in range(len(vPts_n)):
                 if vPtInImage[i]:
-                    plot(vPts_n[i][0], vPts_n[i][1], 'yo')
+                    plt.plot(vPts_n[i][0], vPts_n[i][1], 'yo')
         # Plot vanishing line
         if plot_vline:
             if len(vPts) == 2 and vPtInImage[0] and vPtInImage[1]:
                 vLine = np.linalg.cross(vPts[0], vPts[1])
                 xx,yy = getPlotBoundsLine(limits, vLine)
-                plot(xx,yy,'y-')
+                plt.plot(xx,yy,'y-')
                 #plot([vPts_n[0][0],vPts_n[1][0]], [vPts_n[0][1],vPts_n[1][1]], 'y-')
 
         # Limit axes to the image
@@ -422,8 +421,8 @@ def rectifyMetricF(imA, nLinePairs, doRotationAfterH = True, doTranslationAfterH
     # Plot image and lines
     def replotMetric(imA,limits,lines=[[],[]],x=[[],[]],y=[[],[]]):
         plt.close() # ginput does not allow new points to be plotted
-        imshow(imA,cmap='gray')
-        axis('image')
+        plt.imshow(imA,cmap='gray')
+        plt.axis('image')
 
         # Plot settings 
         plot_lines = False
@@ -439,25 +438,25 @@ def rectifyMetricF(imA, nLinePairs, doRotationAfterH = True, doTranslationAfterH
         if plot_lines:
             for k in range(nred):
                 xx,yy = getPlotBoundsLine(limits, lines[0][k])
-                plot(xx,yy,'r--')
+                plt.plot(xx,yy,'r--')
             if nl1 - nred > 0:
                 xx,yy = getPlotBoundsLine(limits, lines[0][nl-1])
-                plot(xx,yy,'g--')
+                plt.plot(xx,yy,'g--')
             for l in lines[1]:
                 xx,yy = getPlotBoundsLine(limits, l)
-                plot(xx,yy,'b--')
+                plt.plot(xx,yy,'b--')
         if plot_points:
             # Plot lines: direction 1, all red but the last one green
             for k in range(0,nred):
-                plot(x[0][k],y[0][k],'r-')
+                plt.plot(x[0][k],y[0][k],'r-')
             if nl1 - nred > 0:
-                plot(x[0][nl1-1],y[0][nl1-1],'g-')
+                plt.plot(x[0][nl1-1],y[0][nl1-1],'g-')
             # Plot lines: direction 2
             for k in range(0,len(y[1])):
-                plot(x[1][k],y[1][k],'b-')
-        axis('off')
-        axis('image')
-        draw()
+                plt.plot(x[1][k],y[1][k],'b-')
+        plt.axis('off')
+        plt.axis('image')
+        plt.draw()
 
 
     # m = list of lines
